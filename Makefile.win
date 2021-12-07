@@ -1,0 +1,16 @@
+CC=gcc.exe
+CFLAGS=-std=c99 -I"C:/DEV-CPP/include"  -I"C:/progs/shinymaths" -mwindows
+LDFLAGS=-L"C:/DEV-CPP/lib" -lmingw32 -lSDLmain -lSDL -lopengl32 -lglu32  -mwindows -s
+GENS=gens/circle.dll gens/shell.dll gens/logspiral.dll gens/sqrtspiral.dll gens/rotor.dll \
+	gens/star1.dll gens/star2.dll gens/star3.dll gens/dragon.dll
+
+all: shinymath.exe $(GENS)
+
+shinymath.exe: shinymath.c shinymath.h
+	$(CC) shinymath.c $(CFLAGS) -o shinymath.exe $(LDFLAGS)
+
+%.dll: %.c gens/utils.h
+	$(CC) -shared -DBUILD_DLL gens/utils.c $< -o $@
+
+clean:
+	rm -f shinymath.exe $(GENS)
